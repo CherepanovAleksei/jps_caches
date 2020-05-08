@@ -2,12 +2,14 @@
     <id>org.example.jps_caches</id>
     <name>Kotlin JPS caches</name>
     <vendor email="mrneumann888@gmail.com" url="http://www.https://github.com/CherepanovAleksei">mrneumann888@gmail.com</vendor>
-
     <description>This plugin for checking new versions, downloading and rebasing caches.</description>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.vcs</depends>
+    <depends>com.intellij.modules.idea.community</depends>
+    <depends>Git4Idea</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <postStartupActivity implementation="InitialActivity"/>
