@@ -8,50 +8,62 @@ import org.apache.log4j.Level
 import java.io.File
 import java.io.IOException
 
-class CompileServerLoader(private val compileServerFolder: File) : ILoader {
+class CompileServerLoader(private val newCachesFolder: File) : ILoader {
     private val LOG = Logger.getInstance("#CompileServerLoader")
         .also { it.setLevel(Level.WARN) }
     private val TIMESTAMPS_FOLDER_NAME = "timestamps"
     private val FS_STATE_FILE = "fs_state.dat"
+    private val USTAMP_FILE = "ustamp"
 
     override fun copy(project: Project) {
         val time = System.currentTimeMillis()
+//TODO refactor this!!!
         val newTimestampFolder =
-            File(compileServerFolder, TIMESTAMPS_FOLDER_NAME)
-        if (newTimestampFolder.exists()) FileUtil.delete(newTimestampFolder)
+            File(newCachesFolder, TIMESTAMPS_FOLDER_NAME)
+        if (newTimestampFolder.exists()) newTimestampFolder.deleteRecursively()
 
-        val currentDirForBuildCache: File? = BuildManager.getInstance().getProjectSystemDirectory(project)//add error
-        LOG.warn(currentDirForBuildCache?.absolutePath)
-        if (currentDirForBuildCache != null) {
+        val newUstampFile = File(newCachesFolder, USTAMP_FILE)
+        if (newUstampFile.exists()) FileUtil.delete(newUstampFile)
+
+        val newFsStateFile =
+            File(newCachesFolder, FS_STATE_FILE)
+        if (newFsStateFile.exists()) FileUtil.delete(newFsStateFile)
+
+        val oldCachesFolder: File? = BuildManager.getInstance().getProjectSystemDirectory(project)//add error
+        LOG.warn(oldCachesFolder?.absolutePath)
+
+
+        if (oldCachesFolder != null) {
             // Copy timestamp old folder to new cache dir
-            val timestamps = File(
-                currentDirForBuildCache,
+            val oldTimestamps = File(
+                oldCachesFolder,
                 TIMESTAMPS_FOLDER_NAME
             )
-            if (timestamps.exists()) {
-                try {
-                    newTimestampFolder.mkdirs()
-                    FileUtil.copyDir(timestamps, newTimestampFolder) //need copy?
-                } catch (e: IOException) {
-                    LOG.warn("Couldn't copy timestamps from old JPS cache", e)
-                }
+            if (oldTimestamps.exists()) {
+                FileUtil.createDirectory(newTimestampFolder)
+                FileUtil.moveDirWithContent(
+                    oldTimestamps,
+                    newTimestampFolder
+                ).also { if (!it) LOG.error("Can't move compile_server folder") }
+            }
+
+            val oldUstampFile = File(oldCachesFolder, USTAMP_FILE)
+            if (oldUstampFile.exists()) {
+                FileUtil.copy(oldUstampFile, newUstampFile)
             }
 
             // Create new empty fsStateFile
-            val fsStateFile =
-                File(compileServerFolder, FS_STATE_FILE)
-            fsStateFile.delete()
             try {
-                fsStateFile.createNewFile()
+                newFsStateFile.createNewFile()
             } catch (e: IOException) {
                 LOG.warn("Couldn't create new empty FsState file", e)
             }
-            LOG.warn(currentDirForBuildCache.deleteRecursively().toString())
 
+            LOG.warn(oldCachesFolder.deleteRecursively().toString())
             FileUtil.moveDirWithContent(
-                compileServerFolder,
-                currentDirForBuildCache
-            ).also { if(!it) LOG.error("Can't move compile_server folder") }
+                newCachesFolder,
+                oldCachesFolder
+            ).also { if (!it) LOG.error("Can't move compile_server folder") }
             LOG.warn((System.currentTimeMillis()-time).toString())
         }
     }

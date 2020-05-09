@@ -6,20 +6,18 @@ import com.intellij.openapi.util.io.FileUtil
 import org.apache.log4j.Level
 import java.io.File
 
-class OutFolderLoader(private val newOutFolder: File) : ILoader {
-    private val LOG = Logger.getInstance("#OutFolderLoader")
+class DistFolderLoader(private val distFolder: File) : ILoader {
+    private val LOG = Logger.getInstance("#DistFolderLoader")
         .also { it.setLevel(Level.WARN) }
 
     override fun copy(project: Project) {
-        val time = System.currentTimeMillis()
-        val oldOutFolder = File(project.basePath!! + "/out")
-        LOG.warn(oldOutFolder.deleteRecursively().toString())
+        val oldDistFolder = File(project.basePath!! + "/dist")
+        LOG.warn(oldDistFolder.deleteRecursively().toString())
 
         FileUtil.moveDirWithContent(
-            newOutFolder,
-            oldOutFolder
-        ).also { if(!it) LOG.error("Can't move out folder") }
-        LOG.warn((System.currentTimeMillis()-time).toString())
+            distFolder,
+            oldDistFolder
+        ).also { if (!it) LOG.error("Can't move dist folder") }
     }
 
     override fun move() {
@@ -29,5 +27,4 @@ class OutFolderLoader(private val newOutFolder: File) : ILoader {
     override fun rollback() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
 }

@@ -12,7 +12,7 @@ import java.util.stream.Collectors
 class LoaderManager(private val tempFolder: File, private val project: Project) {
     private val LOG = Logger.getInstance("#LoaderManager").also { it.setLevel(Level.WARN) }
     private val expectedFolders =
-        mutableListOf("buildSrc", "compile-server", ".gradle", ".idea", "out", "external_build_system")
+        mutableListOf("compile-server", "out", "dist"/*, "buildSrc", ".gradle", ".idea", "external_build_system"*/)
 
     fun apply() {
         if (!checkNewCaches(tempFolder)) {
@@ -34,12 +34,13 @@ class LoaderManager(private val tempFolder: File, private val project: Project) 
     private fun initLoaders(tempFolder: File): MutableList<ILoader> {
         val folders = tempFolder.listFiles()!!
         return mutableListOf(
-            IdeaFolderLoader(folders.first { file -> file.name == ".idea" }),
-            CompileServerLoader(folders.first { file -> file.name == "compile-server" }),
+            //IdeaFolderLoader(folders.first { file -> file.name == ".idea" }),
+            DistFolderLoader(folders.first { file -> file.name == "dist" }),
+            OutFolderLoader(folders.first { file -> file.name == "out" }),
+            CompileServerLoader(folders.first { file -> file.name == "compile-server" })
             //GradleFolderLoader(folders.first { file -> file.name == ".gradle" }),
             //ExternalBuildSystemFolderLoader(folders.first { file -> file.name == "external_build_system" }),
-            OutFolderLoader(folders.first { file -> file.name == "out" }),
-            BuildSrcFolderLoader(folders.first { file -> file.name == "buildSrc" })
+            //BuildSrcFolderLoader(folders.first { file -> file.name == "buildSrc" })
         )
     }
 

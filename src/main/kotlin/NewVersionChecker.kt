@@ -1,4 +1,5 @@
 
+import com.intellij.compiler.server.BuildManager
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
@@ -58,6 +59,7 @@ class NewVersionChecker(var project: Project, private val address: String, priva
         }
         val loaderManager = LoaderManager(tempFolder, project)
         loaderManager.apply()
+        BuildManager.getInstance().clearState(project)
         LOG.warn("FINISH!")
         ProjectManagerEx.getInstanceEx().reloadProject(project)
         //download by commit
