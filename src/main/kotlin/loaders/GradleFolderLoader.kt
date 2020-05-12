@@ -7,7 +7,7 @@ import org.apache.log4j.Level
 import java.io.File
 
 class GradleFolderLoader(private val gradleFolder: File) : ILoader {
-    private val LOG = Logger.getInstance("#GradleFolderLoader")
+    private val LOG = Logger.getInstance("jps_caches.GradleFolderLoader")
         .also { it.setLevel(Level.WARN) }
 
     override fun copy(project: Project) {

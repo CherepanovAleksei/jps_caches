@@ -10,7 +10,7 @@ import java.util.zip.ZipInputStream
 
 
 class Downloader(private val address: String){
-    private val LOG = Logger.getInstance("#Downloader").also { it.setLevel(Level.WARN) }
+    private val LOG = Logger.getInstance("jps_caches.Downloader").also { it.setLevel(Level.WARN) }
 
     fun apply(project: Project, subfolder: String?): File? {
         //check commit

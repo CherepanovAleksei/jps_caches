@@ -7,7 +7,7 @@ import org.apache.log4j.Level
 import java.io.File
 
 class DistFolderLoader(private val distFolder: File) : ILoader {
-    private val LOG = Logger.getInstance("#DistFolderLoader")
+    private val LOG = Logger.getInstance("jps_caches.DistFolderLoader")
         .also { it.setLevel(Level.WARN) }
 
     override fun copy(project: Project) {

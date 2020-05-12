@@ -7,7 +7,7 @@ import org.apache.log4j.Level
 import java.io.File
 
 class BuildSrcFolderLoader(private val buildSrcFolder: File) : ILoader {
-    private val LOG = Logger.getInstance("#BuildSrcFolderLoader")
+    private val LOG = Logger.getInstance("jps_caches.BuildSrcFolderLoader")
         .also { it.setLevel(Level.WARN) }
 
     override fun copy(project: Project) {

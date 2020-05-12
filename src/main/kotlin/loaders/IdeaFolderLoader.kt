@@ -7,7 +7,7 @@ import org.apache.log4j.Level
 import java.io.File
 
 class IdeaFolderLoader(private val ideaFolder: File) : ILoader {
-    private val LOG = Logger.getInstance("#IdeaFolderLoader")
+    private val LOG = Logger.getInstance("jps_caches.IdeaFolderLoader")
         .also { it.setLevel(Level.WARN) }
 
     override fun copy(project: Project) {

@@ -9,7 +9,7 @@ import java.io.File
 
 class ExternalBuildSystemFolderLoader(private val externalBuildSystemFolder: File) :
     ILoader {
-    private val LOG = Logger.getInstance("#ExternalBuildSystemFolderLoader")
+    private val LOG = Logger.getInstance("jps_caches.ExternalBuildSystemFolderLoader")
         .also { it.setLevel(Level.WARN) }
 
     override fun copy(project: Project) {

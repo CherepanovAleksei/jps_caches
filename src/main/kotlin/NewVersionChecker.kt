@@ -13,7 +13,7 @@ import java.util.*
 
 class NewVersionChecker(var project: Project, private val address: String, private val updatePeriod: Long = 300000) {
 
-    private val LOG = Logger.getInstance("#NewVersionChecker").also { it.setLevel(Level.WARN) }
+    private val LOG = Logger.getInstance("jps_caches.NewVersionChecker").also { it.setLevel(Level.WARN) }
     private var localCacheName = "jps_caches_kotlin.localCacheVersion"
     private val balloonNotification = BalloonNotification( ::startRebase, ::startCheckout)
     private val persistentStorage = PropertiesComponent.getInstance(project)
@@ -45,7 +45,6 @@ class NewVersionChecker(var project: Project, private val address: String, priva
 
     private fun startRebase() {
         LOG.warn("rebase called")
-        ProjectManagerEx.getInstanceEx().reloadProject(project)
     }
 
     private fun startCheckout() {

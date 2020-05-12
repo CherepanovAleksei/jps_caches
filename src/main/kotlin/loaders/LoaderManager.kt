@@ -10,7 +10,7 @@ import java.util.stream.Collectors
 
 
 class LoaderManager(private val tempFolder: File, private val project: Project) {
-    private val LOG = Logger.getInstance("#LoaderManager").also { it.setLevel(Level.WARN) }
+    private val LOG = Logger.getInstance("jps_caches.LoaderManager").also { it.setLevel(Level.WARN) }
     private val expectedFolders =
         mutableListOf("compile-server", "out", "dist"/*, "buildSrc", ".gradle", ".idea", "external_build_system"*/)
 

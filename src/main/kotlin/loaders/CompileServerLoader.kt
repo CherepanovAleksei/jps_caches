@@ -9,7 +9,7 @@ import java.io.File
 import java.io.IOException
 
 class CompileServerLoader(private val newCachesFolder: File) : ILoader {
-    private val LOG = Logger.getInstance("#CompileServerLoader")
+    private val LOG = Logger.getInstance("jps_caches.CompileServerLoader")
         .also { it.setLevel(Level.WARN) }
     private val TIMESTAMPS_FOLDER_NAME = "timestamps"
     private val FS_STATE_FILE = "fs_state.dat"
