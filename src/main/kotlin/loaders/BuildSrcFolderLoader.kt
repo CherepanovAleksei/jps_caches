@@ -11,17 +11,23 @@ class BuildSrcFolderLoader(private val buildSrcFolder: File) : ILoader {
         .also { it.setLevel(Level.WARN) }
 
     override fun copy(project: Project) {
-        val oldBuildSrcFolder = File(project.basePath!! + "/buildSrc")
-        LOG.warn(oldBuildSrcFolder.deleteRecursively().toString())
+        val buildSrcBuildClassesFolder = File(project.basePath!! + "/buildSrc/build/classes").also {
+            if (!it.exists())
+                throw Exception(
+                    "buildSrc/build/classes/ does not exists," +
+                            " please re-import Gradle project"
+                )
+        }
+
+        val oldBuildSrcCachesFolder = File(buildSrcBuildClassesFolder.absolutePath + "/java")
+        if (oldBuildSrcCachesFolder.exists()) {
+            LOG.warn(oldBuildSrcCachesFolder.deleteRecursively().toString())
+        }
 
         FileUtil.moveDirWithContent(
             buildSrcFolder,
-            oldBuildSrcFolder
-        ).also { if(!it) LOG.error("Can't move buildSrc folder") }
-    }
-
-    override fun move() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            oldBuildSrcCachesFolder
+        ).also { if (!it) LOG.error("Can't move buildSrc folder") }
     }
 
     override fun rollback() {

@@ -22,10 +22,6 @@ class OutFolderLoader(private val newOutFolder: File) : ILoader {
         LOG.warn((System.currentTimeMillis()-time).toString())
     }
 
-    override fun move() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun rollback() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

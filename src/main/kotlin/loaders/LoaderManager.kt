@@ -13,7 +13,7 @@ import java.util.stream.Collectors
 class LoaderManager(private val tempFolder: File, private val project: Project) {
     private val LOG = Logger.getInstance("jps_caches.LoaderManager").also { it.setLevel(Level.WARN) }
     private val expectedFolders =
-        mutableListOf("compile-server", "out", "dist"/*, "buildSrc", ".gradle", ".idea", "external_build_system"*/)
+        mutableListOf("compile-server", "out", "dist", "buildSrc"/*, ".gradle", ".idea", "external_build_system"*/)
 
     fun load() {
         if (!checkNewCaches(tempFolder)) {
@@ -38,10 +38,10 @@ class LoaderManager(private val tempFolder: File, private val project: Project) 
             //IdeaFolderLoader(folders.first { file -> file.name == ".idea" }),
             DistFolderLoader(folders.first { file -> file.name == "dist" }),
             OutFolderLoader(folders.first { file -> file.name == "out" }),
-            CompileServerLoader(folders.first { file -> file.name == "compile-server" })
+            CompileServerLoader(folders.first { file -> file.name == "compile-server" }),
+            BuildSrcFolderLoader(folders.first { file -> file.name == "buildSrc" })
             //GradleFolderLoader(folders.first { file -> file.name == ".gradle" }),
             //ExternalBuildSystemFolderLoader(folders.first { file -> file.name == "external_build_system" }),
-            //BuildSrcFolderLoader(folders.first { file -> file.name == "buildSrc" })
         )
     }
 

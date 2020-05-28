@@ -22,10 +22,6 @@ class ExternalBuildSystemFolderLoader(private val externalBuildSystemFolder: Fil
         ).also { if(!it) LOG.error("Can't move external_build_system folder") }
     }
 
-    override fun move() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun rollback() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

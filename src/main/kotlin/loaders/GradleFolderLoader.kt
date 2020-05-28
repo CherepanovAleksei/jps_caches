@@ -11,16 +11,12 @@ class GradleFolderLoader(private val gradleFolder: File) : ILoader {
         .also { it.setLevel(Level.WARN) }
 
     override fun copy(project: Project) {
-        val gr = File(project.basePath!! + "/.gradle")
-        LOG.warn(gr.deleteRecursively().toString())
+        val gradleFolder = File(project.basePath!! + "/.gradle")
+        LOG.warn(gradleFolder.deleteRecursively().toString())
         FileUtil.moveDirWithContent(
-            gradleFolder,
-            gr
-        ).also { if(!it) LOG.error("Can't move .gradle folder") }
-    }
-
-    override fun move() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            this.gradleFolder,
+            gradleFolder
+        ).also { if (!it) LOG.error("Can't move .gradle folder") }
     }
 
     override fun rollback() {

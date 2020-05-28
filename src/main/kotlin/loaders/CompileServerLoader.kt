@@ -14,6 +14,7 @@ class CompileServerLoader(private val newCachesFolder: File) : ILoader {
     private val TIMESTAMPS_FOLDER_NAME = "timestamps"
     private val FS_STATE_FILE = "fs_state.dat"
     private val USTAMP_FILE = "ustamp"
+    private val GRADLE_FOLDER = "gradle"
 
     override fun copy(project: Project) {
         val time = System.currentTimeMillis()
@@ -29,9 +30,12 @@ class CompileServerLoader(private val newCachesFolder: File) : ILoader {
             File(newCachesFolder, FS_STATE_FILE)
         if (newFsStateFile.exists()) FileUtil.delete(newFsStateFile)
 
+        val newGradleFolder =
+            File(newCachesFolder, GRADLE_FOLDER)
+        if (newGradleFolder.exists()) newGradleFolder.deleteRecursively()
+
         val oldCachesFolder: File? = BuildManager.getInstance().getProjectSystemDirectory(project)//add error
         LOG.warn(oldCachesFolder?.absolutePath)
-
 
         if (oldCachesFolder != null) {
             // Copy timestamp old folder to new cache dir
@@ -66,10 +70,6 @@ class CompileServerLoader(private val newCachesFolder: File) : ILoader {
             ).also { if (!it) LOG.error("Can't move compile_server folder") }
             LOG.warn((System.currentTimeMillis()-time).toString())
         }
-    }
-
-    override fun move() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun rollback() {

@@ -20,10 +20,6 @@ class DistFolderLoader(private val distFolder: File) : ILoader {
         ).also { if (!it) LOG.error("Can't move dist folder") }
     }
 
-    override fun move() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun rollback() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
