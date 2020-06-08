@@ -10,14 +10,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-/*
 public class GitRepositoryUtil {
     private static final Logger LOG = Logger.getInstance("com.intellij.jps.cache.git.GitRepositoryUtil");
 
     private GitRepositoryUtil() {}
 
     public static List<Iterator<String>> getCommitsIterator(@NotNull Project project) {
-
         if (GitUtil.hasGitRepositories(project)) {
             Collection<GitRepository> projectRepositories = GitUtil.getRepositories(project);
             return ContainerUtil.map(projectRepositories, repo -> new GitCommitsIterator(project, repo));
@@ -73,6 +71,7 @@ public class GitRepositoryUtil {
 
         private void fetchOldCommits(String latestCommit) {
             try {
+
                 commits = ContainerUtil.map(latestCommit.isEmpty() ? GitHistoryUtils.history(myProject, myRepository.getRoot(), "-n " + FETCH_SIZE) :
                                 GitHistoryUtils.history(myProject, myRepository.getRoot(), latestCommit, "-n " + FETCH_SIZE),
                         it -> it.getId().asString());
@@ -85,48 +84,4 @@ public class GitRepositoryUtil {
             commits = new SmartList<>();
         }
     }
-}
-*/
-public class GitRepositoryUtil {
-    private static final Logger LOG = Logger.getInstance("myGitRepositoryUtil");
-
-    GitRepositoryUtil() {
-
-    }
-
-    public void haveFun(Project p) {
-        GitUtil.getRepositories(p).forEach(gitRepo -> {
-            gitRepo.getBranches().findRemoteBranch("master").getRemote().getUrls().forEach(url -> {
-                LOG.warn(url);
-            });
-        });
-    }
-
-//    private fun getNearestCommit(myProject: Project): Pair<String, Int>? {
-//        //val allCacheKeys: Set<String> = myServerClient.getAllCacheKeys()
-//
-//        val repositoryList = GitRepositoryUtil.getCommitsIterator(myProject)
-//        var commitId = ""
-//        var commitsBehind = 0
-//        for (commitsIterator in repositoryList) {
-//            LOG.warn(commitsIterator.toString())
-//            commitsBehind = 0
-//            while (commitsIterator.hasNext()) {
-//                LOG.warn(commitId)
-//                commitId = commitsIterator.next()
-//                commitsBehind++
-//            }
-//        }
-//        /*
-//        if (!allCacheKeys.contains(commitId)) {
-//            com.intellij.jps.cache.loader.JpsOutputLoaderManager.LOG.warn("Not found any caches for the latest commits in the brunch")
-//            return null
-//        }
-//        if (previousCommitId != null && commitId == previousCommitId && !isForceUpdate) {
-//            com.intellij.jps.cache.loader.JpsOutputLoaderManager.LOG.info("The system contains up to date caches")
-//            return null
-//        }*/
-//        return Pair.create(commitId, commitsBehind)
-//}
-
 }

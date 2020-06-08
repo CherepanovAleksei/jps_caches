@@ -10,13 +10,14 @@ import java.util.concurrent.CompletableFuture
 import java.util.stream.Collectors
 
 
-class LoaderManager(private val tempFolder: File, private val project: Project) {
+class LoaderManager(tempFolder: File, private val project: Project) {
     private val LOG = Logger.getInstance("jps_caches.LoaderManager").also { it.setLevel(Level.WARN) }
     private val expectedFolders =
         mutableListOf("compile-server", "out", "dist", "buildSrc"/*, ".gradle", ".idea", "external_build_system"*/)
+    val cachesFolder = File(tempFolder.absolutePath + "/prebuilt_caches")
 
     fun load() {
-        if (!checkNewCaches(tempFolder)) {
+        if (!checkNewCaches(cachesFolder)) {
             LOG.warn("caches are invalid")
             return //TODO throw error
         }
@@ -25,15 +26,15 @@ class LoaderManager(private val tempFolder: File, private val project: Project) 
             text = "Loading new caches"
         }
 
-        initLoaders(tempFolder).map { item ->
+        initLoaders(cachesFolder).map { item ->
             CompletableFuture
                 .supplyAsync { item.copy(project) }
                 .join()
         }
     }
 
-    private fun initLoaders(tempFolder: File): MutableList<ILoader> {
-        val folders = tempFolder.listFiles()!!
+    private fun initLoaders(cachesFolder: File): MutableList<ILoader> {
+        val folders = cachesFolder.listFiles()!!
         return mutableListOf(
             //IdeaFolderLoader(folders.first { file -> file.name == ".idea" }),
             DistFolderLoader(folders.first { file -> file.name == "dist" }),
@@ -46,8 +47,8 @@ class LoaderManager(private val tempFolder: File, private val project: Project) 
     }
 
 
-    private fun checkNewCaches(tempFolder: File): Boolean {
-        val folderNames = tempFolder.listFiles().stream().map { it.name }.collect(Collectors.toList())
+    private fun checkNewCaches(cachesFolder: File): Boolean {
+        val folderNames = cachesFolder.listFiles().stream().map { it.name }.collect(Collectors.toList())
         return folderNames.sort() == expectedFolders.sort()
     }
 }
