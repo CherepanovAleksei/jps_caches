@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>org.example.jps_caches</id>
-    <name>Kotlin JPS caches</name>
+    <name>Build folder resolver</name>
     <vendor email="mrneumann888@gmail.com" url="http://www.https://github.com/CherepanovAleksei">mrneumann888@gmail.com</vendor>
     <description>This plugin for checking new versions, downloading and rebasing caches.</description>
 
