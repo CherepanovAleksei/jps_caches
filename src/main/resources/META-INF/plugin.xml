@@ -1,15 +1,14 @@
 <idea-plugin>
-    <id>org.example.jps_caches</id>
+    <id>org.example.build_resolver</id>
     <name>Build folder resolver</name>
     <vendor email="mrneumann888@gmail.com" url="http://www.https://github.com/CherepanovAleksei">mrneumann888@gmail.com</vendor>
-    <description>This plugin for checking new versions, downloading and rebasing caches.</description>
+    <description>Resolve build folders for current project</description>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.vcs</depends>
-
-    <depends>Git4Idea</depends>
+    <depends>com.intellij.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <postStartupActivity implementation="InitialActivity"/>
